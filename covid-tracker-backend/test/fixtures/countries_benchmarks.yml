@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  coutrny_1: MyString
+  country_2: MyString
+  start_date: 2025-06-11
+  end_date: 2025-06-11
+
+two:
+  name: MyString
+  coutrny_1: MyString
+  country_2: MyString
+  start_date: 2025-06-11
+  end_date: 2025-06-11
