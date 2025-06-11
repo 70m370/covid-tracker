@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  resources :countries_benchmarks
   root "hello_world#show"
 
-  # /api_test/covid?country=Argentina example with the query on it 
+  #
+  # example
+  # http://127.0.0.1:3000/api_test/covid?country=Brazil&date=2020-09-08&type=cases
+  # types can be, deaths or cases
   get "api_test/covid", to: "api_test#covid"
 
   # encapsulate inside a namespace ? idk
-  resources :countries_benchmarks
 end

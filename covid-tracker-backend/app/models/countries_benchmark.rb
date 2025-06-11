@@ -1,2 +1,0 @@
-class CountriesBenchmark < ApplicationRecord
-end

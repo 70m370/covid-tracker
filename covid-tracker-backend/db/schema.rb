@@ -10,14 +10,5 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_11_200230) do
-  create_table "countries_benchmarks", force: :cascade do |t|
-    t.string "name"
-    t.string "coutrny_1"
-    t.string "country_2"
-    t.date "start_date"
-    t.date "end_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema[8.0].define(version: 0) do
 end

@@ -1,10 +1,12 @@
 class ApiTestController < ApplicationController
   
+
   def covid
-    data = CovidApiService.fetch(params[:country] || "Brazil")
+    # type can be cases or deaths
+    data = CovidApiService.fetch(params[:country], params[:type], params[:date])
     render json: data
   rescue => e
-    render json: { error: e.message }, status: :bad_request
+    render json: { error: e.message }, status: :bad_request # 400
   end
   
 end
