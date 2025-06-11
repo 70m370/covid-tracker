@@ -1,0 +1,9 @@
+# See https://git-scm.com/docs/gitattributes for more about git attribute files.
+
+# Mark the database schema as having been generated.
+covid-tracker-backend/db/schema.rb linguist-generated
+
+# Mark any vendored files as having been vendored.
+covid-tracker-backend/vendor/* linguist-vendored
+covid-tracker-backend/config/credentials/*.yml.enc diff=rails_credentials
+covid-tracker-backend/config/credentials.yml.enc diff=rails_credentials
