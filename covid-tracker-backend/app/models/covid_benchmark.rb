@@ -1,0 +1,2 @@
+class CovidBenchmark < ApplicationRecord
+end

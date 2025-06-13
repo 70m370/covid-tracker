@@ -10,5 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_13_225052) do
+  create_table "covid_benchmarks", force: :cascade do |t|
+    t.string "name"
+    t.string "first_state"
+    t.string "second_state"
+    t.string "first_city"
+    t.string "second_city"
+    t.date "date_start"
+    t.date "date_end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 end

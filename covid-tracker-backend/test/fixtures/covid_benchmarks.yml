@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  first_state: MyString
+  second_state: MyString
+  first_city: MyString
+  second_city: MyString
+  date_start: 2025-06-13
+  date_end: 2025-06-13
+
+two:
+  name: MyString
+  first_state: MyString
+  second_state: MyString
+  first_city: MyString
+  second_city: MyString
+  date_start: 2025-06-13
+  date_end: 2025-06-13
