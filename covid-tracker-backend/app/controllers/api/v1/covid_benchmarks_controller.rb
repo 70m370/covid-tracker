@@ -16,7 +16,6 @@ class Api::V1::CovidBenchmarksController < ApplicationController
   # POST /covid_benchmarks
   def create
     @covid_benchmark = CovidBenchmark.new(covid_benchmark_params)
-
     if @covid_benchmark.save
       render json: @covid_benchmark, status: :created, location: @covid_benchmark
     else
@@ -40,8 +39,6 @@ class Api::V1::CovidBenchmarksController < ApplicationController
 
   private
 
-    # benchmark calculation
-
     # aftercreate result ? 
 
 
@@ -52,6 +49,8 @@ class Api::V1::CovidBenchmarksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def covid_benchmark_params
-      params.expect(covid_benchmark: [ :name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end ])
+      # @covid_benchmark.name = "#{first_state} X #{second_state} | #{first_city} X #{second_city}"
+      params.require(:covid_benchmark).permit(:name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end)
+      # params.expect(covid_benchmark: [ :name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end ])
     end
 end
