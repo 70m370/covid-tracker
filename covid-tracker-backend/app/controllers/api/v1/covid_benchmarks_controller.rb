@@ -17,7 +17,7 @@ class Api::V1::CovidBenchmarksController < ApplicationController
   def create
     @covid_benchmark = CovidBenchmark.new(covid_benchmark_params)
     if @covid_benchmark.save
-      render json: @covid_benchmark, status: :created, location: @covid_benchmark
+      render json: @covid_benchmark, status: :created
     else
       render json: @covid_benchmark.errors, status: :unprocessable_entity
     end
@@ -37,10 +37,19 @@ class Api::V1::CovidBenchmarksController < ApplicationController
     @covid_benchmark.destroy!
   end
 
+  def create_benchmark
+    # query param
+    comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "") 
+    @covid_benchmark = CovidBenchmark.last
+    result = @covid_benchmark.benchmark_comparison(comparison)
+
+    render json: result, status: :created
+  end
+
+
   private
 
     # aftercreate result ? 
-
 
     # Use callbacks to share common setup or constraints between actions.
     def set_covid_benchmark
@@ -50,6 +59,8 @@ class Api::V1::CovidBenchmarksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def covid_benchmark_params
       # @covid_benchmark.name = "#{first_state} X #{second_state} | #{first_city} X #{second_city}"
+      # 
+      # i'll be adding a comparison parameter here, i need to create a addmigration
       params.require(:covid_benchmark).permit(:name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end)
       # params.expect(covid_benchmark: [ :name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end ])
     end
