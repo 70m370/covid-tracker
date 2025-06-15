@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     namespace :v1 do
        resources :covid_benchmarks
        get "/benchmarks/", to: "covid_benchmarks#create_benchmark"
+
+       get "/results/", to: "results#show"
     end
   end
 end

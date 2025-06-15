@@ -16,14 +16,22 @@ class Api::V1::CovidBenchmarksController < ApplicationController
   # POST /covid_benchmarks
   def create
     @covid_benchmark = CovidBenchmark.new(covid_benchmark_params)
+
+    # gambiarra
     if @covid_benchmark.save
-      render json: @covid_benchmark, status: :created
+      result = create_benchmark
+      if result.is_a?(Hash) && result[:error].present?
+        @covid_benchmark.destroy #  dont save based on the comparisson / i'll try to lock dates  
+        render json: { error: result[:error] }, status: :unprocessable_entity
+      else
+        render json: @covid_benchmark, status: :created
+      end
     else
       render json: @covid_benchmark.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /covid_benchmarks/1
+  #  PATCH/PUT /covid_benchmarks/1
   def update
     if @covid_benchmark.update(covid_benchmark_params)
       render json: @covid_benchmark
@@ -37,19 +45,26 @@ class Api::V1::CovidBenchmarksController < ApplicationController
     @covid_benchmark.destroy!
   end
 
-  def create_benchmark
-    # query param
-    comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "") 
-    @covid_benchmark = CovidBenchmark.last
-    result = @covid_benchmark.benchmark_comparison(comparison)
+  # def create_benchmark
+  #   # query param
+  #   comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "") 
+  #   @covid_benchmark = CovidBenchmark.last
+  #   @covid_benchmark.benchmark_comparison(comparison)
 
-    render json: result, status: :created
-  end
+  #   # render json: result, status: :created
+  # end
 
 
   private
 
-    # aftercreate result ? 
+    def create_benchmark
+      # query param
+      comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "") 
+      @covid_benchmark = CovidBenchmark.last
+      @covid_benchmark.benchmark_comparison(comparison)
+
+      # render json: result, status: :created
+    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_covid_benchmark

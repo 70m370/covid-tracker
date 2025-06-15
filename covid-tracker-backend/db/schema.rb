@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_13_225052) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_14_032627) do
   create_table "covid_benchmarks", force: :cascade do |t|
     t.string "name"
     t.string "first_state"
@@ -22,4 +22,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_225052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "results", force: :cascade do |t|
+    t.integer "covid_benchmark_id", null: false
+    t.string "worse"
+    t.string "comparison_metric"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "details"
+    t.index ["covid_benchmark_id"], name: "index_results_on_covid_benchmark_id"
+  end
+
+  add_foreign_key "results", "covid_benchmarks"
 end

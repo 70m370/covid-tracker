@@ -1,4 +1,5 @@
 class CovidBenchmark < ApplicationRecord
+  has_one :result
     # benchmark calculation
     
     # this comparrison can be deaths - confirmed cases - death rate or confirmed per 100k 
@@ -29,16 +30,21 @@ class CovidBenchmark < ApplicationRecord
 
         # puts "City with worse #{comparison}: #{worst_city}"
         # Optionally return all results for usage
-        {
+        result_data = {
           first: first_result,
           second: second_result,
           worse_city: worst_city,
           comparison_metric: comparison
         }
 
-      # result will be the worse city - do a create here
+        Result.create!(
+          covid_benchmark_id: self.id,
+          worse: worst_city,
+          comparison_metric: comparison,
+          details: result_data
+        )
         
-      # self.results.create!(city: first_result[:city], state: first_result[:state], data: first_result)
+        result_data
       rescue => e
         Rails.logger.error("API fetch failed: #{e.message}")
         { error: "API fetch failed: #{e.message}" }
