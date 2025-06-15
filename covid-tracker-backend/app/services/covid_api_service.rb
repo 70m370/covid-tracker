@@ -4,11 +4,12 @@ class CovidApiService
   
   base_uri "https://api.brasil.io/v1/dataset/covid19/caso/data/"
 
-  def self.fetch(state:, date:, city:)
+  def self.fetch(state:, date:, city:, place_type:)
     response = get("", query: {
       state: state,
       date: date,
-      city: city
+      city: city,
+      place_type: place_type
     }, headers: {
       "Authorization" => "Token  #{ENV['BRASIL_IO_API']}"
     })

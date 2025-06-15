@@ -4,7 +4,8 @@ class ApiBrasilController < ApplicationController
     data = CovidApiService.fetch(
       state: params[:state],
       date: params[:date],
-      city: params[:city]
+      city: params[:city],
+      place_type: params[:place_type]
     )
 
     render json: data

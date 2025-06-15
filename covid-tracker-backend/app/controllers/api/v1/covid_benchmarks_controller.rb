@@ -57,25 +57,23 @@ class Api::V1::CovidBenchmarksController < ApplicationController
 
   private
 
+    # query and json parameters, not following REST archtecture well but i'm doing the fast as i can  
     def create_benchmark
       # query param
-      comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "") 
+      comparison = params[:comparison].to_s.gsub(/\A"|"\Z/, "")
+      scale = params[:place_type] 
       @covid_benchmark = CovidBenchmark.last
-      @covid_benchmark.benchmark_comparison(comparison)
+      @covid_benchmark.benchmark_comparison(comparison, scale)
 
       # render json: result, status: :created
     end
 
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_covid_benchmark
       @covid_benchmark = CovidBenchmark.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def covid_benchmark_params
-      # @covid_benchmark.name = "#{first_state} X #{second_state} | #{first_city} X #{second_city}"
-      # 
-      # i'll be adding a comparison parameter here, i need to create a addmigration
       params.require(:covid_benchmark).permit(:name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end)
       # params.expect(covid_benchmark: [ :name, :first_state, :second_state, :first_city, :second_city, :date_start, :date_end ])
     end

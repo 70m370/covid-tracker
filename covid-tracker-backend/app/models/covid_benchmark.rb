@@ -3,29 +3,33 @@ class CovidBenchmark < ApplicationRecord
     # benchmark calculation
     
     # this comparrison can be deaths - confirmed cases - death rate or confirmed per 100k 
-    def benchmark_comparison(comparison)
+    def benchmark_comparison(comparison, scale)
       begin
-        start_first = CovidApiService.fetch(state: self.first_state, date: self.date_start, city: self.first_city)
-        end_first = CovidApiService.fetch(state: self.first_state, date: self.date_end, city: self.first_city)
+        start_first = CovidApiService.fetch(state: self.first_state, date: self.date_start, city: self.first_city, place_type: scale)
+        end_first = CovidApiService.fetch(state: self.first_state, date: self.date_end, city: self.first_city, place_type: scale)
 
         first_result = calculate_variation(start_first["results"][0], end_first["results"][0])
 
-        start_second = CovidApiService.fetch(state: self.second_state, city: self.second_city, date: self.date_start)
-        end_second = CovidApiService.fetch(state: self.second_state, city: self.second_city, date: self.date_end)
+        start_second = CovidApiService.fetch(state: self.second_state, city: self.second_city, date: self.date_start, place_type: scale)
+        end_second = CovidApiService.fetch(state: self.second_state, city: self.second_city, date: self.date_end, place_type: scale)
         
         # needs to put [ results ] to gather the json response correctly so != nil
         second_result = calculate_variation(start_second["results"][0], end_second["results"][0])
+        
+        #
+        first_location_name = scale == "city" ? first_result[:city] : first_result[:state]
+        second_location_name = scale == "city" ? second_result[:city] : second_result[:state]
 
         # switch case for comparison
-        worst_city = case comparison
+        worst_city = case comparison 
         when "deaths"
-                      second_result[:deaths_diff] > first_result[:deaths_diff] ? second_result[:city] : first_result[:city]
+          second_result[:deaths_diff] > first_result[:deaths_diff] ? second_location_name : first_location_name
         when "confirmed"
-                      second_result[:confirmed_diff] > first_result[:confirmed_diff] ? second_result[:city] : first_result[:city]
+          second_result[:confirmed_diff] > first_result[:confirmed_diff] ? second_location_name : first_location_name
         when "death_rate"
-                      second_result[:death_rate_diff] > first_result[:death_rate_diff] ? second_result[:city] : first_result[:city]
+          second_result[:death_rate_diff] > first_result[:death_rate_diff] ? second_location_name : first_location_name
         when "confirmed_per_100k"
-                      second_result[:confirmed_per_100k_diff] > first_result[:confirmed_per_100k_diff] ? second_result[:city] : first_result[:city]
+          second_result[:confirmed_per_100k_diff] > first_result[:confirmed_per_100k_diff] ? second_location_name : first_location_name
         end
 
         # puts "City with worse #{comparison}: #{worst_city}"
